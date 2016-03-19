@@ -1,14 +1,17 @@
 #ifndef GeometryCalculator_h
 #define GeometryCalculator_h 1
 
+#include <utility>
 #include "TVector3.h"
 class GeometryCalculator {
 
 public:
   GeometryCalculator(){};
-  double CalculateIntersection(TVector3,TVector3);
+  std::pair<double,double> CalculateIntersection(TVector3,TVector3);
+  
 private:
-  double QuadraticEquation(double, double, double);
+  double PositiveQuadraticEquation(double, double, double);
+  double NegativeQuadraticEquation(double, double, double);
   
 };
 #endif
