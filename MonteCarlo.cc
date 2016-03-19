@@ -11,11 +11,25 @@
 #include "PsGenerator.hh"
 #include <iostream>
 #include <utility>
+#include <math.h>
+#define _USE_MATH_DEFINES
 
 int main() {
 
+  // Should be user-defined stuff
+  //====================================================================
   // Define the decay vertex (location of the source holder--user input)
-  TVector3 decayVertex(0,0,2);
+  TVector3 decayVertex(0,0,0);
+
+  // Define a rotation of the magnetic field (this can be due to the magnet being rotated
+  // or an inhomogeneity in the field (the former is more likely)
+  // Units are in radians
+  double rotationAboutX = 5*M_PI/180.;
+  double rotationAboutY = 0*M_PI/180.;
+  double rotationAboutZ = 0*M_PI/180.;
+
+  int maximumEventNum = 100000000;
+  //====================================================================
   
   // Define the output file
   TFile f1("test.root","RECREATE");
@@ -58,7 +72,6 @@ int main() {
 
   // APEX Bar Length (length of cylindrical array: 55 cm)
   double cylinderLength = 55.0;
-  int maximumEventNum = 100000000;
   
   for (int i = 0; i < maximumEventNum ; i++ ) {
 
@@ -87,6 +100,13 @@ int main() {
       m = -1;
       gen->GenerateoPs(&k1,&k2,&k3,m);    
     }
+
+    k1.RotateX(rotationAboutX);
+    k1.RotateY(rotationAboutY);
+    k1.RotateZ(rotationAboutZ);
+    k2.RotateX(rotationAboutX);
+    k2.RotateY(rotationAboutY);
+    k2.RotateZ(rotationAboutZ);
 
     // Calculates the intersection of k1 with APEX
     // Returns pair of solutions (t_pos, t_neg)
